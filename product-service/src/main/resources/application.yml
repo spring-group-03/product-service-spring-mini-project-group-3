@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: product-service
+#  profiles:
+#    active: dev
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/rest-api
+  datasource:
+    username: postgres
+    password: 123
+    url: jdbc:postgresql://localhost:5435/productdb
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8085
+  address: 192.168.42.241
