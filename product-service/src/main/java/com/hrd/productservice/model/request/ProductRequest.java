@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,8 +27,8 @@ public class ProductRequest {
     @Max(value = 1000000, message = "Max quantity 1 000 000")
     private Integer quantity;
 
-    @Positive(message = "Positive Number Only")
-    private Long categoryId;
+    @NotNull(message = "CategoryId Cant Be Empty")
+    private UUID categoryId;
 
     public Product toEntity(){
         return Product.builder()

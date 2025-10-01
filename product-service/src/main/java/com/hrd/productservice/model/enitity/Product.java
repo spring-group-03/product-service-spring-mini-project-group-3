@@ -3,10 +3,12 @@ package com.hrd.productservice.model.enitity;
 import com.hrd.productservice.model.reponse.AppUserResponse;
 import com.hrd.productservice.model.reponse.CategoryResponse;
 import com.hrd.productservice.model.reponse.ProductResponse;
+import com.hrd.productservice.model.request.ProductRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "products")
@@ -18,8 +20,8 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID productId;
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -30,10 +32,10 @@ public class Product {
     private Integer quantity;
 
     @Column(nullable = false)
-    private Long categoryId;
+    private UUID categoryId;
 
     @Column(nullable = false)
-    private String userId;
+    private UUID userId;
 
     public ProductResponse toResponse(AppUserResponse userResponse, CategoryResponse categoryResponse){
         return ProductResponse.builder()
@@ -44,5 +46,13 @@ public class Product {
                 .price(this.price)
                 .quantity(this.quantity)
                 .build();
+    }
+
+    public void updateForm(ProductRequest productRequest){
+        this.setName(productRequest.getName());
+        this.setQuantity(productRequest.getQuantity());
+        this.setPrice(productRequest.getPrice());
+        this.setQuantity(productRequest.getQuantity());
+        this.setCategoryId(productRequest.getCategoryId());
     }
 }
