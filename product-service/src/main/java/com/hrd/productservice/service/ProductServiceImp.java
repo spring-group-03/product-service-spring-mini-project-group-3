@@ -14,6 +14,7 @@ import com.hrd.productservice.model.request.ProductRequest;
 import com.hrd.productservice.repository.ProductRepository;
 import com.hrd.productservice.utils.ApiResponseWithPagination;
 import com.hrd.productservice.utils.AuthHelper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     @Transactional
+    @CircuitBreaker(name = "serviceCB", fallbackMethod = "fallbackMethod")
     public ProductResponse createNewProduct(ProductRequest productRequest) {
         UUID userId = UUID.fromString(AuthHelper.getCurrentUserId());
 
@@ -55,6 +57,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @CircuitBreaker(name = "serviceCB", fallbackMethod = "paginatedFallbackMethod")
     public ApiResponseWithPagination<ProductResponse> getAllProduct(Integer page, Integer size, ProductProperties productProperties, Sort.Direction direction) {
         AppUserResponse user = userClient.getCurrentUserProfile().getBody().getPayload();
         Sort.Direction sortedDirection = direction == null ? Sort.Direction.ASC : direction;
@@ -74,6 +77,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @CircuitBreaker(name = "serviceCB", fallbackMethod = "fallbackMethod")
     public ProductResponse getProductById(UUID productId) {
         UUID userId = UUID.fromString(AuthHelper.getCurrentUserId());
         AppUserResponse userResponse = userClient.getCurrentUserProfile().getBody().getPayload();
@@ -84,6 +88,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     @Transactional
+    @CircuitBreaker(name = "serviceCB", fallbackMethod = "fallbackMethod")
     public ProductResponse updateProductById(UUID productId, ProductRequest productRequest) {
         UUID userId = UUID.fromString(AuthHelper.getCurrentUserId());
         AppUserResponse userResponse = userClient.getCurrentUserProfile().getBody().getPayload();
@@ -113,6 +118,11 @@ public class ProductServiceImp implements ProductService {
         Product product = productRepository.findByProductIdAndUserId(productId, userId).orElseThrow(() -> new NotFoundException("Product Id : " + productId + " Not Found!"));
         productRepository.delete(product);
     }
-
+    public ProductResponse fallbackMethod(Throwable throwable) {
+        throw new NotFoundException("depended service not available");
+    }
+    public ApiResponseWithPagination<ProductResponse> paginatedFallbackMethod(Throwable throwable) {
+        throw new NotFoundException("depended service not available");
+    }
 
 }

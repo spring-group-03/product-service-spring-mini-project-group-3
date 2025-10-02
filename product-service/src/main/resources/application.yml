@@ -7,3 +7,14 @@ spring:
     import: optional:configserver:http://34.126.135.232:8888
 server:
   port: 8084
+resilience4j:
+  circuitbreaker:
+    instances:
+      profileCB:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5000ms
+        slidingWindowType: count_based
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 6
+        minimumNumberOfCalls: 3
+        registerHealthIndicator: true
