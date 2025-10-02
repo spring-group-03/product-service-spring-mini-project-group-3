@@ -1,27 +1,12 @@
 spring:
   application:
-#    config:
-#      import: optional:configserver:http://34.126.135.232:8888
     name: product-service
-#  profiles:
-#    active: dev
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/rest-api
-  datasource:
-    username: postgres
-    password: 123
-    url: jdbc:postgresql://localhost:5435/productdb
-  jpa:
-    hibernate:
-      ddl-auto: update
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://34.126.135.232:8761/eureka/
-
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://34.126.135.232:8888
 server:
-  port: 8085
+  port: 8084
+springdoc:
+  api-docs:
+    path: /v3/api-docs
