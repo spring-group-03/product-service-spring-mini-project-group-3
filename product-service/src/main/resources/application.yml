@@ -7,6 +7,3 @@ spring:
     import: optional:configserver:http://34.126.135.232:8888
 server:
   port: 8084
-springdoc:
-  api-docs:
-    path: /v3/api-docs
