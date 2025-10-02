@@ -10,6 +10,7 @@ import com.hrd.productservice.utils.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/product")
+@RequestMapping("api/v1/products")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Validated
@@ -32,8 +33,8 @@ public class ProductController extends BaseResponse {
     @GetMapping
     @Operation(summary = "Get All Products (paginated)")
     public ResponseEntity<ApiResponse<ApiResponseWithPagination<ProductResponse>>> getProductsPaginated(
-            @RequestParam(defaultValue = "1") @Positive Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "1") @Min(1) @Positive Integer page,
+            @RequestParam(defaultValue = "10") @Min(1) @Positive Integer size,
             @RequestParam ProductProperties productProperties,
             @RequestParam Sort.Direction direction
     ){

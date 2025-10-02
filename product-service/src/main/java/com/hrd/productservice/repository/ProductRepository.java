@@ -18,5 +18,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findAllByUserId(UUID userId, PageRequest pageRequest);
     Optional<Product> findByProductIdAndUserId(UUID productId, UUID userId);
     Optional<List<Product>> findAllByCategoryIdAndUserId(UUID categoryId, UUID userId);
-
+    Boolean existsByName(String name);
 }

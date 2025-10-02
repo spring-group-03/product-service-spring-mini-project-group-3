@@ -2,6 +2,8 @@ package com.hrd.productservice.service;
 
 import com.hrd.productservice.client.CategoryClient;
 import com.hrd.productservice.client.UserClient;
+import com.hrd.productservice.exception.BadRequestException;
+import com.hrd.productservice.exception.DuplicateResourceException;
 import com.hrd.productservice.exception.NotFoundException;
 import com.hrd.productservice.model.enitity.Product;
 import com.hrd.productservice.model.enums.ProductProperties;
@@ -35,6 +37,11 @@ public class ProductServiceImp implements ProductService {
     @Transactional
     public ProductResponse createNewProduct(ProductRequest productRequest) {
         UUID userId = UUID.fromString(AuthHelper.getCurrentUserId());
+
+        boolean isProductNameExist = productRepository.existsByName(productRequest.getName());
+        if(isProductNameExist) throw new DuplicateResourceException( productRequest.getName() + " Name already exists");
+
+
         Product product = productRequest.toEntity();
         AppUserResponse user = userClient.getCurrentUserProfile().getBody().getPayload();
         CategoryResponse category = categoryClient.getCategoryById(UUID.fromString(String.valueOf(productRequest.getCategoryId()))).getBody().getPayload();

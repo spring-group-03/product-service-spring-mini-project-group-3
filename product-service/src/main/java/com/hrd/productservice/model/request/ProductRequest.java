@@ -21,6 +21,8 @@ public class ProductRequest {
 
     @Min(value = 1, message = "Price must be at least 1")
     @Max(value = 1000000, message = "Max Price 1 000 000")
+    @Positive(message = "Most be Positive")
+    @Digits(integer = 7, fraction = 2, message = "Price must have max 2 decimal places")
     private BigDecimal price;
 
     @Min(value = 1, message = "Quantity must be at least 1")
