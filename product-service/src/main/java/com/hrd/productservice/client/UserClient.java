@@ -8,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
-        name = "user-service",
-        url = "http://localhost:8081/api/v1",
-        path = "/profiles",
+        name = "auth-service",
+        path = "api/v1/users",
         configuration = OpenFeignConfig.class
 )
 public interface UserClient {

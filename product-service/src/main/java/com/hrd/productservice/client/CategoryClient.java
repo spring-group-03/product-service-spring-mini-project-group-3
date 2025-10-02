@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.UUID;
 
 @FeignClient(
-        name = "category-service",
-        url = "http://localhost:8083/api/v1",
-        path = "/categories"
+        name = "categories-service",
+        path = "api/v1/categories"
 )
 public interface CategoryClient {
 
